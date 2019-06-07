@@ -32,8 +32,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="327" />
-    <option name="y" value="-16" />
+    <option name="x" value="251" />
+    <option name="y" value="70" />
     <option name="width" value="1400" />
     <option name="height" value="1000" />
   </component>
@@ -57,6 +57,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$USER_HOME$/PycharmProjects/test" />
   </component>
   <component name="RunDashboard">
