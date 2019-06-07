@@ -23,11 +23,13 @@ for sheet in sheetNames:
         curSheet = wb.sheet_by_name(sheet)
         # print("sheet name:", sheet, "rows:", curSheet.nrows, "columns:", curSheet.ncols)
         data = [[curSheet.cell_value(r, c) for c in range(9)] for r in range(64, 111)]
-        #row, col = find_index(data, 'Total')
+        row, col = find_index(data, 'Putting ')
+        print(row, col)
 
-        print(sheet, data[11][4])
+# 'Putting' in sheet has space after it, making it "Putting "
 
-
+####### RANGE DEFINITIONS ###########
+# 'Putting " located at (3,2)
 
 
 """
