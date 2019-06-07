@@ -14,7 +14,7 @@ def find_index(lst, target):
 
 fileLocation = r'C:\Users\Intern-5\Documents\PDS\2016-2017 Competitive Red (5-7)\Donnelly, Michael'
 
-wb = xlrd.open_workbook(fileLocation + r'\Hat _ PDS Test 03 15.xlsx')
+wb = xlrd.open_workbook('Hat & PDS Test.xlsx')
 
 sheetNames = wb.sheet_names()
 
