@@ -44,6 +44,8 @@ def ath_data_add(data):
     if data[0] == '':
         return
     # for loop used to find spacing and index of relevant data in passed through data file
+    for i in range(len(TEMPLATE_LIST)):
+        sheet1.write(0, i, TEMPLATE_LIST[i])
     for index in range(len(data)):
         sheet1.write(row_count, index, data[index])
     ath_data.save('ath_data.xls')
@@ -59,7 +61,7 @@ def correctFeet(data, toCorrect):
     Returns data list with corrected values
     """
     for i in toCorrect:
-        num = data[i]
+        num = int(data[i])
         w = num // 1  # whole number part
         d = (num % 1) * 100 # decimal part converted to whole number
 
@@ -140,7 +142,7 @@ def add_data(name, date, matrix):
     data.append(round(matrix[38][7], 3))
 
     # correct feet and inches form to feet
-    data = correctFeet(data, [44, 46, 52, 54])
+    #data = correctFeet(data, [44, 46, 52, 54])
     return data
 
 
@@ -166,3 +168,14 @@ def process_file(fileName):
             ath_data_add(data) # add data to master spreadsheet
 
 
+def main():
+    PDS = xlrd.open_workbook("All Hat and PDS tests.xlsx")
+    sheet = PDS.sheet_by_index(0)
+    paths = [sheet.cell_value(col, 8) for col in range(1, 133)]
+    for path in paths:
+        print(path)
+        process_file(path)
+    return
+
+
+main()
