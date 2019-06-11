@@ -2,9 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d9d8c28b-1184-417f-96af-e4562a1909f3" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/heading adder.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ath_data.xls" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/directory combination.py" beforeDir="false" afterPath="$PROJECT_DIR$/directory combination.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/xlWork.py" beforeDir="false" afterPath="$PROJECT_DIR$/xlWork.py" afterDir="false" />
     </list>
@@ -16,23 +13,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/xlWork.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="4" column="31" selection-start-line="4" selection-start-column="31" selection-end-line="4" selection-end-column="31" />
-              <folding>
-                <element signature="e#0#11#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/heading adder.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="248">
-              <caret line="30" column="29" selection-start-line="30" selection-start-column="29" selection-end-line="30" selection-end-column="29" />
+            <state relative-caret-position="94">
+              <caret line="164" column="47" lean-forward="true" selection-start-line="164" selection-start-column="47" selection-end-line="164" selection-end-column="47" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
               </folding>
@@ -43,23 +28,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/directory combination.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="4" column="28" lean-forward="true" selection-start-line="4" selection-start-column="28" selection-end-line="4" selection-end-column="29" />
-              <folding>
-                <element signature="e#0#6#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/athlete data adding.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="20" lean-forward="true" selection-start-line="20" selection-end-line="20" />
-              <folding>
-                <element signature="e#0#11#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="51">
+              <caret line="3" selection-start-line="3" selection-end-line="6" selection-end-column="12" />
             </state>
           </provider>
         </entry>
@@ -86,9 +56,9 @@
       <list>
         <option value="$PROJECT_DIR$/Driver.py" />
         <option value="$PROJECT_DIR$/xlwt test.py" />
+        <option value="$PROJECT_DIR$/heading adder.py" />
         <option value="$PROJECT_DIR$/directory combination.py" />
         <option value="$PROJECT_DIR$/xlWork.py" />
-        <option value="$PROJECT_DIR$/heading adder.py" />
       </list>
     </option>
   </component>
@@ -103,6 +73,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -114,7 +85,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -134,7 +104,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.heading adder">
+  <component name="RunManager" selected="Python.directory combination">
     <configuration name="athlete data adding" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="PDSProject" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -242,10 +212,10 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.directory combination" />
         <item itemvalue="Python.heading adder" />
         <item itemvalue="Python.xlWork" />
         <item itemvalue="Python.athlete data adding" />
-        <item itemvalue="Python.directory combination" />
         <item itemvalue="Python.xlwt test" />
       </list>
     </recent_temporary>
@@ -272,7 +242,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="180" y="79" width="1120" height="800" extended-state="0" />
+    <frame x="180" y="77" width="1120" height="800" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24907748" />
@@ -313,16 +283,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/xlWork.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="31" selection-start-line="4" selection-start-column="31" selection-end-line="4" selection-end-column="31" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/athlete data adding.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="340">
@@ -333,20 +293,27 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/directory combination.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="28" lean-forward="true" selection-start-line="4" selection-start-column="28" selection-end-line="4" selection-end-column="29" />
-          <folding>
-            <element signature="e#0#6#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/heading adder.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="248">
           <caret line="30" column="29" selection-start-line="30" selection-start-column="29" selection-end-line="30" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/directory combination.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" selection-start-line="3" selection-end-line="6" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/xlWork.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="94">
+          <caret line="164" column="47" lean-forward="true" selection-start-line="164" selection-start-column="47" selection-end-line="164" selection-end-column="47" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
           </folding>
