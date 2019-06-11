@@ -13,3 +13,4 @@ def name_from_path(path):
             break
     fullname = firstname + " " + lastname
     return fullname
+
