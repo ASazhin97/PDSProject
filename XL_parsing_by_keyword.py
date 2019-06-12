@@ -82,6 +82,13 @@ def find_index(target, matrix, startRow=0):
 
 
 def add_data(name, date, matrix):
+    """
+    Adds data to a list with all the tests in correct positions
+    :param name: player name
+    :param date: date of test
+    :param matrix: matrix representing the spreadsheet to be parsed with just PDS data, no HAT
+    :return: 81 index long list of all test data
+    """
     data = [name, date]  # add name and date to data list
     r = 0
     # iterate through Test 1: Shot Making scores
@@ -138,8 +145,14 @@ def add_data(name, date, matrix):
 
 
 def fix_matrix(matrix):
+    """
+    This function deletes the HAT data from top of matrix
+    :param matrix: contains whole spreadsheet as a matrix
+    :return: new matrix with just the PDS data, no HAT data
+    """
     r, c = find_index("GPC PDS Testing Sheet", matrix)
     return matrix[r:]
+
 
 def process_file(fileName, playerName):
     """
@@ -154,9 +167,10 @@ def process_file(fileName, playerName):
     # loop iterates through all sheets in a document
     for sheet in sheetNames:
         if sheet[0] in DIGITS:  # filter out sheet names that are not dates
+            print('Processing sheet', sheet, ". . .")
             curSheet = wb.sheet_by_name(sheet)
             date = sheet.replace('.', '/')
-            #delete letters from date
+            # delete letters from date
             newDate = ''
             for char in date:
                 if char in DIGITS or char == '/':
@@ -166,22 +180,23 @@ def process_file(fileName, playerName):
             matrix = [[curSheet.cell_value(r, c) for c in range(11)] for r in range(curSheet.nrows)]
             matrix = fix_matrix(matrix)
             data = add_data(playerName, date, matrix)  # list with all relevant data for one test
-            # ath_data_add(data) # add data to master spreadsheet
-            for i in range(len(TEMPLATE_LIST)):
-                print(TEMPLATE_LIST[i], ":", data[i])
+            # ath_data_add(data) # add data to master spreadsheet. change: uncomment
+            print('Successfully processed sheet', sheet)
+
 
 
 def main():
-    PDS = xlrd.open_workbook("All Hat and PDS tests.xlsx")
-    sheet = PDS.sheet_by_index(0)
-    paths = [sheet.cell_value(col, 8) for col in range(1, 133)]
+    # change these lines
+
+    # PDS = xlrd.open_workbook("All Hat and PDS tests.xlsx")
+    # sheet = PDS.sheet_by_index(0)
+    # paths = [sheet.cell_value(col, 8) for col in range(1, 133)]
+
     for path in paths:
         print(path)
         process_file(path)
     return
 
 
-# main()
-path = r'C:\Users\Intern-5\Downloads\PDS Scores\2017-2018\2017-2018 Elite\Mellinger, Grant\PDS with Scoring Average Winter.xlsx'
+main()
 
-process_file(path, 'Grant Mellinger')
