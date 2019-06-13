@@ -30,6 +30,21 @@ TEMPLATE_LIST = ['Name', 'Date', 'Putting: 2 ft.', 'Putting: 3 ft.', 'Putting: 4
                  'Test 3: PDS Points', 'PDS Score'
                  ]
 
+KEYWORDS1 = ["2'", "3'", "4'", "6'", "10'", "20'", "30'", "Total", "3 yard", "5 yard",
+             "10 yard", "20 yard", "30 yard", "40 yard", "60 yard", "60 yard (rough)",
+             "80 yard", "100 yard", "Flop Shot ", "Total", "10 yard", "25 yard", "Total ",
+             "Driver", "5 wood/hybrid", "6 Iron", "Driver - Draw", "Driver - Fade",
+             "6 Iron - Draw", "6 Iron - Fade", "Ball Flight Laws - 6 Iron", "Total ",
+             "Total Strokes"]
+
+KEYWORDS2 = ["FMS Score", "Push - Ups", "Pull - Ups", "Horizontal Rows",
+             "Seated Chest Pass (ft)", "Sit up & Throw (ft)", "Plank (sec)",
+             "Supine Bridge (sec)", "Vertical Jump (ft)", "Broad Jump (ft)",
+             "5-10-5"]
+KEYWORDS20 = ["Total Score", "Test 2: PDS Points "]
+KEYWORDS3 = ["Scoring Average", "Greens in Regulation %", "Fairways in Regulation %",
+             "Putts per Round", "Putts per GIR", "Scrambling %", "Sam Putt Lab",
+             "GPC Short Game Test ", "Short Game"]
 
 ath_data = xlwt.Workbook()
 sheet1 = ath_data.add_sheet("Master")
@@ -52,30 +67,91 @@ def ath_data_add(data):
     return
 
 
-
-
-# def correctFeet(data, toCorrect):
-#     """
-#     Helper function to correct the values in indices given in the list
-#     toCorrect to feet
-#     Returns data list with corrected values
-#     """
-#     for i in toCorrect:
-#         num = int(data[i])
-#         w = num // 1  # whole number part
-#         d = (num % 1) * 100 # decimal part converted to whole number
-#
-#         # this if statement corrects for values that were input incorrectly
-#         # which caused > 12 inches to be in inches part
-#         while d >= 12:
-#             d = d / 10
-#         data[i] = round(w + (d / 12), 3)
-#     return data
+def find_index(target, matrix, startRow=0):
+    # print("*********************")
+    # print("target:", target, "SR:", startRow)
+    totRow = startRow
+    for row in matrix[startRow:]:
+        if target in row:
+            if 'Total' in target:
+                return totRow, row.index(target) - 1
+            c = row.index(target)
+            return totRow, row.index(target)
+        totRow += 1
+    return False, False
 
 
 def add_data(name, date, matrix):
+    """
+    Adds data to a list with all the tests in correct positions
+    :param name: player name
+    :param date: date of test
+    :param matrix: matrix representing the spreadsheet to be parsed with just PDS data, no HAT
+    :return: 81 index long list of all test data
+    """
     data = [name, date]  # add name and date to data list
+    r = 0
+    # iterate through Test 1: Shot Making scores
+    for test in KEYWORDS1:
+        r, c = find_index(test, matrix, r)
+        if r:  # if r is a number, it is True
+            data.append(matrix[r][c + 2])
+        else:
+            data.append("")
+    r, c = find_index("Test 1: PDS Points ", matrix, r)
+    if r:
+        data.append(matrix[r][c + 1])
+    else:
+        data.append("")
+    r = 0
+    # iterate through Test 2: Physical Proficiency
+    for test in KEYWORDS2:
+        r, c = find_index(test, matrix, r)
+        if r:
+            data.append(matrix[r][c + 1])
+            data.append(matrix[r][c + 2])
+        else:
+            data.append("")
+            data.append("")
+    rs = r  # save r for later
+    # add Test 2 score and PDS points
+    r, c = find_index("Total Score", matrix, r)
+    data.append(matrix[r][c + 2])
+    r, c = find_index("Test 2: PDS Points ", matrix, r)
+    data.append(matrix[r][c + 1])
 
+    # iterate through test 3 golf performance
+    for test in KEYWORDS3:
+        r, c = find_index(test, matrix, r)
+        if r:
+            data.append(matrix[r][c + 1])
+            data.append(matrix[r][c + 2])
+        else:
+            data.append("")
+            data.append("")
+    r, c = find_index("Sam Putt Lab", matrix)  # find index of SPL to work off of
+    if r:
+        data.append(matrix[r + 1][c + 2])  # add Test 3 total score
+        data.append(matrix[r + 2][c + 2])  # add Test 3 PDS points
+    else:
+        data.append("")
+        data.append("")
+    r, c = find_index("Player Development Score", matrix)
+    if r:
+        data.append(matrix[r][c + 1])
+    else:
+        data.append("")
+    return data
+
+
+def fix_matrix(matrix):
+    """
+    This function deletes the HAT data from top of matrix
+    :param matrix: contains whole spreadsheet as a matrix
+    :return: new matrix with just the PDS data, no HAT data
+    """
+    r, c = find_index("GPC PDS Testing Sheet", matrix)
+    return matrix[r:]
 
 
 def process_file(fileName, playerName):
@@ -91,19 +167,31 @@ def process_file(fileName, playerName):
     # loop iterates through all sheets in a document
     for sheet in sheetNames:
         if sheet[0] in DIGITS:  # filter out sheet names that are not dates
+            print('Processing sheet', sheet, ". . .")
             curSheet = wb.sheet_by_name(sheet)
             date = sheet.replace('.', '/')
-            playerName = curSheet.cell_value(1, 13)[12:].strip()
+            # delete letters from date
+            newDate = ''
+            for char in date:
+                if char in DIGITS or char == '/':
+                    newDate += char
+            date = newDate
             # get the relevant data in a list of lists called matrix
-            matrix = [[curSheet.cell_value(r, c) for c in range(9)] for r in range(64, 111)]
+            matrix = [[curSheet.cell_value(r, c) for c in range(11)] for r in range(curSheet.nrows)]
+            matrix = fix_matrix(matrix)
             data = add_data(playerName, date, matrix)  # list with all relevant data for one test
-            ath_data_add(data) # add data to master spreadsheet
+            # ath_data_add(data) # add data to master spreadsheet. change: uncomment
+            print('Successfully processed sheet', sheet)
+
 
 
 def main():
-    PDS = xlrd.open_workbook("All Hat and PDS tests.xlsx")
-    sheet = PDS.sheet_by_index(0)
-    paths = [sheet.cell_value(col, 8) for col in range(1, 133)]
+    # change these lines
+
+    # PDS = xlrd.open_workbook("All Hat and PDS tests.xlsx")
+    # sheet = PDS.sheet_by_index(0)
+    # paths = [sheet.cell_value(col, 8) for col in range(1, 133)]
+
     for path in paths:
         print(path)
         process_file(path)
@@ -111,3 +199,4 @@ def main():
 
 
 main()
+
