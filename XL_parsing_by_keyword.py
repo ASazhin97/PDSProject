@@ -48,6 +48,7 @@ KEYWORDS3 = ["Scoring Average", "Greens in Regulation %", "Fairways in Regulatio
 
 ath_data = xlwt.Workbook()
 sheet1 = ath_data.add_sheet("Master")
+ath_data.save("ath_data.xls")
 
 
 # adds athelete's data to ath_data file
@@ -59,13 +60,26 @@ def ath_data_add(data):
     if data[0] == '':
         return
     # for loop used to find spacing and index of relevant data in passed through data file
-    for i in range(len(TEMPLATE_LIST)):
-        sheet1.write(0, i, TEMPLATE_LIST[i])
     for index in range(len(data)):
         sheet1.write(row_count, index, data[index])
     ath_data.save('ath_data.xls')
     return
 
+def name_from_path(path):
+    name_comma_index = None
+    for i in range(len(path)):
+        if path[i] == ',':
+            name_comma_index = i
+    for j in range(name_comma_index, 1, -1):
+        if path[j] == "\\":
+            lastname = path[j+1:name_comma_index]
+            break
+    for h in range(name_comma_index, len(path)):
+        if path[h] == "\\":
+            firstname = path[name_comma_index + 2:h]
+            break
+    fullname = firstname + " " + lastname
+    return fullname
 
 def find_index(target, matrix, startRow=0):
     # print("*********************")
@@ -180,7 +194,7 @@ def process_file(fileName, playerName):
             matrix = [[curSheet.cell_value(r, c) for c in range(11)] for r in range(curSheet.nrows)]
             matrix = fix_matrix(matrix)
             data = add_data(playerName, date, matrix)  # list with all relevant data for one test
-            # ath_data_add(data) # add data to master spreadsheet. change: uncomment
+            ath_data_add(data) # add data to master spreadsheet. change: uncomment
             print('Successfully processed sheet', sheet)
 
 
@@ -188,13 +202,13 @@ def process_file(fileName, playerName):
 def main():
     # change these lines
 
-    # PDS = xlrd.open_workbook("All Hat and PDS tests.xlsx")
-    # sheet = PDS.sheet_by_index(0)
-    # paths = [sheet.cell_value(col, 8) for col in range(1, 133)]
+    PDS = xlrd.open_workbook("2017-2018 query.xlsx")
+    sheet = PDS.sheet_by_index(0)
+    paths = [sheet.cell_value(col, 7) for col in range(1, 85)]
 
     for path in paths:
         print(path)
-        process_file(path)
+        process_file(path, name_from_path(path))
     return
 
 
