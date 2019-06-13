@@ -32,23 +32,18 @@ TEMPLATE_LIST = ['Name', 'Date', 'Putting: 2 ft.', 'Putting: 3 ft.', 'Putting: 4
 
 # format for these lists is that a tuple represents where the data is for the
 # following strings relative to the indices of the string. Tuples take form
-# (delta row, delta col). So a tuple of (0,2) means that the following strings
-# correspond to the data in the location matrix[r][c + 2]
-KW = [(0, 2, 1), "Name:", "Date:", "2'", "3'", "4'", "6'", "10'", "20'", "30'", (0, 1, 1),
-      "Putting Overall Score", (0, 2, 1), "3 yard", "5 yard",
-      "10 yard", "20 yard", "30 yard", "40 yard", "60 yard", "60 yard rough",
-      "80 yard", "100 yard", "Flop Shot", (0, 1, 1), "Wedge Control Overall Score",
-      (0, 2, 1), "10 yard", "25 yard", (0, 1, 1), "Bunker Overall Score", (0, 2, 1),
-      "Driver", "5w or Hybrid", "6 Iron", "Driver - Draw", "Driver - Fade",
-      "6 Iron - Draw", "6 Iron - Fade", "BFC - 6i", (0, 1, 1), "Full Swing Overall Score",
-      "Total Strokes", (0, 1, 2), "FMS Score", "Push - Ups", "Pull - Ups", "Horizontal Rows",
-      "Seated Chest Pass (ft)", "Sit up & Throw (ft)", "Plank (sec)",
-      "Supine Bridge (sec)", "Vertical Jump (in)", "Broad Jump (ft)", "5-10-5"]
-# start here tomorrow
-KEYWORDS20 = ["Total Score", "Test 2: PDS Points "]
-KEYWORDS3 = ["Scoring Average", "Greens in Regulation %", "Fairways in Regulation %",
-             "Putts per Round", "Putts per GIR", "Scrambling %", "Sam Putt Lab",
-             "GPC Short Game Test ", "Short Game"]
+# (delta col, # to add, start row)
+KW1 = [(2, 1, 0), "2'", "3'", "4'", "6'", "10'", "20'", "30'", (1, 1, 0),
+       "Putting Overall Score", (2, 1, 13), "3 yard", "5 yard",
+       "10 yard", "20 yard", "30 yard", "40 yard", "60 yard", "60 yard rough",
+       "80 yard", "100 yard", "Flop Shot", (1, 1, 13), "Wedge Control Overall Score",
+       (2, 1, 25), "10 yard", "25 yard", (1, 1, 25), "Bunker Overall Score", (2, 1, 25),
+       "Driver ", "5w or Hybrid", "6 Iron", "Driver - Draw", "Driver - Fade",
+       "6 Iron - Draw", "6 Iron - Fade", "BFC - 6i", (1, 1, 25), "Full Swing Overall Score",
+       "Total Strokes", "GPC Golf Shot Making", (1, 2, 0), "FMS Score", "Push - Ups",
+       "Pull - Ups", "Horizontal Rows", "Seated Chest Pass (ft)", "Sit up & Throw (ft)",
+       "Plank (sec)", "Supine Bridge (sec)", "Vertical Jump (in)", "Broad Jump (ft)",
+       "5-10-5", (1, 1, 11), "Total Score", "Test 2: PDS Points "]
 
 ath_data = xlwt.Workbook()
 sheet1 = ath_data.add_sheet("Master")
@@ -72,89 +67,80 @@ def ath_data_add(data):
 
 
 def find_index(target, matrix, startRow=0):
-    print("*********************")
-    print("target:", target, "Start Row:", startRow)
+    # print("*********************")
+    # print("target:", target, "Start Row:", startRow)
     r = startRow
     for row in matrix[startRow:]:
         if target in row:
             c = row.index(target)
-            print('Found:', target, "at r and c:", r, c)
+            # print('Found:', target, "at r and c:", r, c)
             return r, row.index(target)
         r += 1
-    print("did not find", target)
+    # print("did not find", target)
     return False, False
 
 
-def add_all_data(mat):
-    dr, dc, quant_to_add = 0, 0, 1 # delta row, delta col
-    addTwo = False
-    for el in KW:
+def add_res(data, matrix, target, dc, quant_to_add, sr):
+    r, c = find_index(target, matrix, sr)
+    if r:
+        for i in range(quant_to_add):
+            data.append(matrix[r][c + dc + i])
+    else:
+        for i in range(quant_to_add):
+            data.append("")
+    return data
+
+
+def add_all_data(mat, date):
+    data = []
+    r, c = find_index("Name:", mat)
+    data.append(mat[r][c + 2])  # add name
+    data.append(date)
+    dc, quant_to_add, sr = 0, 1, 0  # delta row, delta col
+    for el in KW1:
         if type(el) is str:
-            #call function to add
-            add_res(mat, dr, dc, quant_to_add)
+            # call function to add
+            data = add_res(data, mat, el, dc, quant_to_add, sr)
         elif type(el) is tuple:
-            dr, dc, quant_to_add = el[0], el[1], el[2]
-
-#     r, c = mat[]
-#     name = mat[]
-#     data = [name]  # add name and date to data list
-#     r = 0
-#     # iterate through Test 1: Shot Making scores
-#     for test in KEYWORDS1:
-#         r, c = find_index(test, matrix, r)
-#         if r:  # if r is a number, it is True
-#             data.append(matrix[r][c + 2])
-#         else:
-#             data.append("")
-#     r, c = find_index("Test 1: PDS Points ", matrix, r)
-#     if r:
-#         data.append(matrix[r][c + 1])
-#     else:
-#         data.append("")
-#     r = 0
-#     # iterate through Test 2: Physical Proficiency
-#     for test in KEYWORDS2:
-#         r, c = find_index(test, matrix, r)
-#         if r:
-#             data.append(matrix[r][c + 1])
-#             data.append(matrix[r][c + 2])
-#         else:
-#             data.append("")
-#             data.append("")
-#     rs = r  # save r for later
-#     # add Test 2 score and PDS points
-#     r, c = find_index("Total Score", matrix, r)
-#     data.append(matrix[r][c + 2])
-#     r, c = find_index("Test 2: PDS Points ", matrix, r)
-#     data.append(matrix[r][c + 1])
-#
-#     # iterate through test 3 golf performance
-#     for test in KEYWORDS3:
-#         r, c = find_index(test, matrix, r)
-#         if r:
-#             data.append(matrix[r][c + 1])
-#             data.append(matrix[r][c + 2])
-#         else:
-#             data.append("")
-#             data.append("")
-#     r, c = find_index("Sam Putt Lab", matrix)  # find index of SPL to work off of
-#     if r:
-#         data.append(matrix[r + 1][c + 2])  # add Test 3 total score
-#         data.append(matrix[r + 2][c + 2])  # add Test 3 PDS points
-#     else:
-#         data.append("")
-#         data.append("")
-#     r, c = find_index("Player Development Score", matrix)
-#     if r:
-#         data.append(matrix[r][c + 1])
-#     else:
-#         data.append("")
-#     return data
-
-
-def fix_matrix(matrix):
-    r, c = find_index("GPC PDS Testing Sheet", matrix)
-    return matrix[r:]
+            dc, quant_to_add, sr = el[0], el[1], el[2]
+    # now add scoring avg. and other golf stats
+    r, c = find_index("Scoring Average", mat)  # find first occurrence of SA
+    r, c = find_index("Scoring Average", mat, r + 1)  # find second occurrence
+    if r:
+        data.append(mat[r][c + 1])
+        data.append(mat[r][c + 2])
+    else:
+        data.append("")
+        data.append("")
+    # skip missing data
+    for i in range(10):
+        data.append("")
+    # add SAM putt lab and save coordinates
+    r, c = find_index("Sam Putt Lab", mat)
+    save_r, save_c = r, c
+    if r:
+        data.append(mat[r][c + 1])
+        data.append(mat[r][c + 2])
+    else:
+        data.append("")
+        data.append("")
+    for i in range(2):  # skip GPC short game test
+        data.append("")
+    r, c = find_index("Short Game", mat)
+    if r:
+        data.append(mat[r][c + 1])
+        data.append(mat[r][c + 2])
+    else:
+        data.append("")
+        data.append("")
+    data.append(mat[save_r + 1][save_c + 2])  # add test 3 total score
+    data.append(mat[save_r + 2][save_c + 2])  # add test 3 PDS points
+    r, c = find_index("Short Game", mat)
+    if r:
+        data.append(mat[r][c + 1])
+    else:
+        data.append("")
+    return data
 
 
 def print_formatted(matrix):
@@ -181,11 +167,10 @@ def process_file(fileName):
             # get the relevant data in a list of lists called matrix
             matrix = [[curSheet.cell_value(r, c) for c in range(curSheet.ncols)]
                       for r in range(curSheet.nrows)]
-            # data = add_all_data(matrix)  # list with all relevant data for one test
-            # ath_data_add(data) # add data to master spreadsheet
-            # for i in range(len(TEMPLATE_LIST)):
-            #     print(TEMPLATE_LIST[i], ":", data[i])
-            print_formatted(matrix)
+
+            # get list with all relevant data for one test
+            data = add_all_data(matrix, sheet.replace('.', '/'))
+            ath_data_add(data)  # add data to master spreadsheet
 
 
 def main():
@@ -199,7 +184,4 @@ def main():
     return
 
 
-# main()
-path = r'C:\Users\Intern-5\Downloads\PDS Scores\2018-2019\2018-2019 Competitve\Lang, Chris\PDS with Scoring Average Color Lang.xlsx'
-
-process_file(path)
+main()
