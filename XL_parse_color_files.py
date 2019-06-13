@@ -58,8 +58,6 @@ def ath_data_add(data):
     if data[0] == '':
         return
     # for loop used to find spacing and index of relevant data in passed through data file
-    for i in range(len(TEMPLATE_LIST)):
-        sheet1.write(0, i, TEMPLATE_LIST[i])
     for index in range(len(data)):
         sheet1.write(row_count, index, data[index])
     ath_data.save('ath_data.xls')
@@ -175,9 +173,9 @@ def process_file(fileName):
 
 def main():
     # change this
-    # PDS = xlrd.open_workbook("All Hat and PDS tests.xlsx")
-    # sheet = PDS.sheet_by_index(0)
-    # paths = [sheet.cell_value(col, 8) for col in range(1, 133)]
+    PDS = xlrd.open_workbook("2018-19 query.xlsx")
+    sheet = PDS.sheet_by_index(0)
+    paths = [sheet.cell_value(col, 7) for col in range(1, 87)]
     for path in paths:
         print(path)
         process_file(path)
